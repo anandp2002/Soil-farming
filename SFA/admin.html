@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="adminstyle.css">
+</head>
+<body>
+    <h1>Admin Panel</h1>
+
+    <div class="form-container">
+        <h2>Add Soil Details</h2>
+        <form id="soil-form">
+            <label for="soil-name">Soil Name:</label>
+            <input type="text" id="soil-name" name="soil-name" required>
+            <label for="soil-description">Description:</label>
+            <textarea id="soil-description" name="soil-description" required></textarea>
+            <button type="submit">Add Soil</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <h2>Add Distributor Details</h2>
+        <form id="distributor-form">
+            <label for="distributor-name">Distributor Name:</label>
+            <input type="text" id="distributor-name" name="distributor-name" required>
+            <label for="distributor-address">Address:</label>
+            <textarea id="distributor-address" name="distributor-address" required></textarea>
+            <button type="submit">Add Distributor</button>
+        </form>
+    </div>
+
+<!-- Firebase configuration -->
+<script>
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    const firebaseConfig = {
+        apiKey: "AIzaSyAjbnNUPEdqnxKYJrB72t9MwAKPXeglyjc",
+        authDomain: "soil-farming-agent-1509c.firebaseapp.com",
+        databaseURL: "https://soil-farming-agent-1509c-default-rtdb.firebaseio.com",
+        projectId: "soil-farming-agent-1509c",
+        storageBucket: "soil-farming-agent-1509c.appspot.com",
+        messagingSenderId: "1038254019873",
+        appId: "1:1038254019873:web:b54f47414d1fe0d75b1a60",
+        measurementId: "G-RBYVGHBB9L"
+      };
+
+       // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    const database = firebase.database();
+
+    document.getElementById("soil-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const soilName = document.getElementById("soil-name").value;
+        const soilDescription = document.getElementById("soil-description").value;
+        // Push data to the 'soils' node in the database
+        database.ref('soils').push({
+            name: soilName,
+            description: soilDescription
+        });
+        alert("Soil details added successfully!");
+        // Clear form fields after submission
+        document.getElementById("soil-name").value = "";
+        document.getElementById("soil-description").value = "";
+    });
+
+    document.getElementById("distributor-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const distributorName = document.getElementById("distributor-name").value;
+        const distributorAddress = document.getElementById("distributor-address").value;
+        // Push data to the 'distributors' node in the database
+        database.ref('distributors').push({
+            name: distributorName,
+            address: distributorAddress
+        });
+        alert("Distributor details added successfully!");
+        // Clear form fields after submission
+        document.getElementById("distributor-name").value = "";
+        document.getElementById("distributor-address").value = "";
+    });
+</script>
+
+    <script src="adminscript.js"></script>
+
+
+</body>
+</html>

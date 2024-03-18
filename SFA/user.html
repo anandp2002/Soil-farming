@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>User Page</h1>
+
+    <div id="soil-list">
+        <h2>Soil Details</h2>
+        <ul id="soil-details"></ul>
+    </div>
+
+    <div id="distributor-list">
+        <h2>Distributor Details</h2>
+        <ul id="distributor-details"></ul>
+    </div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAjbnNUPEdqnxKYJrB72t9MwAKPXeglyjc",
+        authDomain: "soil-farming-agent-1509c.firebaseapp.com",
+        databaseURL: "https://soil-farming-agent-1509c-default-rtdb.firebaseio.com",
+        projectId: "soil-farming-agent-1509c",
+        storageBucket: "soil-farming-agent-1509c.appspot.com",
+        messagingSenderId: "1038254019873",
+        appId: "1:1038254019873:web:b54f47414d1fe0d75b1a60",
+        measurementId: "G-RBYVGHBB9L"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    const database = firebase.database();
+
+    // Function to fetch and display soil details
+    function displaySoilDetails() {
+        const soilRef = database.ref('soils');
+        soilRef.on('value', (snapshot) => {
+            const soilDetails = snapshot.val();
+            const soilList = document.getElementById('soil-details');
+            soilList.innerHTML = '';
+            for (let key in soilDetails) {
+                const soil = soilDetails[key];
+                const listItem = document.createElement('li');
+                listItem.textContent = `Name: ${soil.name}, Description: ${soil.description}`;
+                soilList.appendChild(listItem);
+            }
+        });
+    }
+
+    // Function to fetch and display distributor details
+    function displayDistributorDetails() {
+        const distributorRef = database.ref('distributors');
+        distributorRef.on('value', (snapshot) => {
+            const distributorDetails = snapshot.val();
+            const distributorList = document.getElementById('distributor-details');
+            distributorList.innerHTML = '';
+            for (let key in distributorDetails) {
+                const distributor = distributorDetails[key];
+                const listItem = document.createElement('li');
+                listItem.textContent = `Name: ${distributor.name}, Address: ${distributor.address}`;
+                distributorList.appendChild(listItem);
+            }
+        });
+    }
+
+    // Call the functions to display soil and distributor details
+    displaySoilDetails();
+    displayDistributorDetails();
+</script>
+
+</body>
+</html>
